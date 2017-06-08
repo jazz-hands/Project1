@@ -94,4 +94,5 @@ public class ProductMaint extends HttpServlet {
          String path = sc.getRealPath("/WEB-INF/products.txt");
          ProductIO.add(product, path);
        }
+
 }
