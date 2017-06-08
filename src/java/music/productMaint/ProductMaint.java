@@ -62,10 +62,35 @@ public class ProductMaint extends HttpServlet {
        if(!productExists) {
          ServletContext sc = getServletContext();
          String path = sc.getRealPath("/WEB-INF/products.txt");
-         ProductIO.add(user, path);
+
+         ProductIO.add(product, path);
        }
 
        String url = "/displayProducts.jsp";
        return url;
      }
+
+     private String editProduct(HttpServletRequest request, HttpServletResponse response)
+       {
+         //TODO check logic for editing
+
+         String productCode = request.getParameter("productCode");
+        //  HttpSession session = request.getSession();
+
+         //get updated Product
+         String productCode = request.getParameter("productCode");
+         String description = request.getParameter("description");
+         String price = request.getParameter("price");
+
+         // store the data in a Product object
+         Product product = new Product();
+         product.setProductCode(productCode);
+         product.setDescription(description);
+         product.setPrice(price);
+
+         ServletContext sc = getServletContext();
+         String path = sc.getRealPath("/WEB-INF/products.txt");
+         ProductIO.add(product, path);
+       }
+
 }
