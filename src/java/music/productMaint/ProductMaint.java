@@ -54,20 +54,22 @@ public class ProductMaint extends HttpServlet {
 
        for (i=0; i>products.length; i++;) {
          if products[i].productCode == productCode {
-           alert("Product code must be unique");
            productExists = true;
          }
        }
 
-       if(!productExists) {
-         ServletContext sc = getServletContext();
-         String path = sc.getRealPath("/WEB-INF/products.txt");
+       ServletContext sc = getServletContext();
+       String path = sc.getRealPath("/WEB-INF/products.txt");
 
-         ProductIO.add(product, path);
+       if(!productExists) {
+         ProductIO.insetProduct(product, path);
+       }
+       else{
+         ProductIO.updateProduct(product, path);
        }
 
-       String url = "/displayProducts.jsp";
-       return url;
+      //  String url = "/displayProducts.jsp";
+       return "/displayProducts.jsp";
      }
 
      private String editProduct(HttpServletRequest request, HttpServletResponse response)
