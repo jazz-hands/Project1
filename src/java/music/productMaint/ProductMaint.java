@@ -62,6 +62,7 @@ public class ProductMaint extends HttpServlet {
        if(!productExists) {
          ServletContext sc = getServletContext();
          String path = sc.getRealPath("/WEB-INF/products.txt");
+
          ProductIO.add(product, path);
        }
 
@@ -91,4 +92,5 @@ public class ProductMaint extends HttpServlet {
          String path = sc.getRealPath("/WEB-INF/products.txt");
          ProductIO.add(product, path);
        }
+
 }
