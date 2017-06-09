@@ -6,6 +6,7 @@ import java.io.*;
 import java.util.List;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import music.data.ProductDB;
 
 public class ProductMaintServlet extends HttpServlet {
 
@@ -56,13 +57,9 @@ public class ProductMaintServlet extends HttpServlet {
     //Use this method to add and update a product
     public String addProduct(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Product Code: "+request.getParameter("productCode"));
           
         // get the product data
          String productCode = request.getParameter("productCode");
-//         String description = request.getParameter("description");
-//         String priceString = request.getParameter("price");
-//         double price = Double.parseDouble(priceString);
 
          HttpSession session = request.getSession();
 
@@ -72,8 +69,7 @@ public class ProductMaintServlet extends HttpServlet {
             product.setCode(productCode);
             product.setDescription(ProductIO.selectProduct(productCode).getDescription());
             product.setPrice(ProductIO.selectProduct(productCode).getPrice());
-             
-             
+
             session.setAttribute("product", product);
          }
          else {
@@ -82,33 +78,30 @@ public class ProductMaintServlet extends HttpServlet {
          
         return "/product.jsp";
      }
-
-    public String updateProduct(HttpServletRequest request, HttpServletResponse response)
-      {
-          String productCode = request.getParameter("productCode");
-          String description = request.getParameter("description");
-          String priceString = request.getParameter("price");
-          double price = Double.parseDouble(priceString);
-          
-          Product product = new Product();
-          product.setCode(productCode);
-          product.setDescription(description);
-          product.setPrice(price);
-          
-          if(ProductIO.exists(productCode)) {
-              ProductIO.updateProduct(product);
-          }
-          else {
-              ProductIO.insertProduct(product);
-          }
-          
-          HttpSession session = request.getSession();
-          List<Product> products = ProductIO.selectProducts();
-          session.setAttribute("products", products);
-          
-          return "/displayProducts.jsp";
-      }
     
+    public String updateProduct(HttpServletRequest request,
+            HttpServletResponse response) {
+        
+        HttpSession session = request.getSession();
+
+        String productCode = request.getParameter("productCode");
+        String description = request.getParameter("description");
+        String priceString = request.getParameter("price");
+        double price = Double.parseDouble(priceString);
+        
+        Product product = new Product();
+        product.setCode(productCode);
+        product.setDescription(description);
+        product.setPrice(price);
+        
+        ProductDB.updateProduct(product);
+        
+        List<Product> products = ProductIO.selectProducts();
+        session.setAttribute("products", products);
+        
+        return "/displayProducts.jsp";
+    }
+
     private String deleteProduct(HttpServletRequest request, HttpServletResponse response)
       {
           return null;
