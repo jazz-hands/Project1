@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="styles/main.css" type="text/css"/>
 </head>
 <body>
-    <p><a href="productMaint?action=displayProducts">View Products</a></p>
+    <h1>Product Maintenance</h1>
+    <p><a href="./displayProducts.jsp"  >View Products</a></p>
+    <!--<p><a href="productMaint?action=displayProducts"  >View Products</a></p>-->
 </body>
 </html>
