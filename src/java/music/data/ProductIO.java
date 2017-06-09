@@ -4,11 +4,12 @@ import music.business.*;
 import java.io.*;
 import java.util.*;
 
+public class ProductIO {
+
 private static List<Product> products = null;
 private static String filePath = null;
 
-public class ProductIO {
-  // Called once from the controller based on servlet context
+// Called once from the controller based on servlet context
   public static void init(String filePath) {
     ProductIO.filePath = filePath;
   }

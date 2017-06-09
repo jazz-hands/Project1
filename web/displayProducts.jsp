@@ -1,13 +1,34 @@
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Murach's Java Servlets and JSP</title>
+    <title>Product Maintenance</title>
     <link rel="stylesheet" href="styles/main.css" type="text/css"/>
 </head>
 <body>
     
-<h1>CD list</h1>
+<h1>Products</h1>
+
+<table>
+    <tr>
+        <th>Code</th>
+        <th>Description</th>
+        <th class="right">Price</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <c:forEach var="product" items="${products}">
+        <tr>
+            <td>${product.code}</td>
+            <td>${product.description}</td>
+            <td class="right">${product.price}</td>
+            <td class="right"><input type="button" value="Edit"></td>
+            <td class="right"><input type="button" value="Delete"></td>
+        </tr>
+    </c:forEach>
+</table>
+
 <table>
     <tr>
         <th>Description</th>
