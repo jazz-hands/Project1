@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Product Maintenance</h1>
-    <p><a href="./displayProducts.jsp"  >View Products</a></p>
-    <!--<p><a href="productMaint?action=displayProducts"  >View Products</a></p>-->
+    <p><a href="ProductMaint?action=displayProducts"  >View Products</a></p>
 </body>
 </html>

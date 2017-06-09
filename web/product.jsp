@@ -1,3 +1,4 @@
+<%@ taglib prefix="mma" uri="/WEB-INF/music.tld" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -8,17 +9,25 @@
   <body>
 
     <h1>Product</h1>
-    <form action="addProduct" method="post">
+    <form action="ProductMaint" method="post">
       <strong>Code: </strong>
-      <input type="text" name="productCode" value="${product.productCode}"><br>
-
+      <input type="text" name="productCode" value="${sessionScope.product.code}">
+      <mma:MarkEmptyField field="${sessionScope.product.code}"/><br>
+      
       <strong>Description: </strong>
-      <input type=text name="description" value="${product.description}" id="description"><br>
-
+      <input type=text name="description" value="${sessionScope.product.description}" id="description">
+      <mma:MarkEmptyField field="${sessionScope.product.description}"/><br>
+      
       <strong>Price: </strong>
-      <input type=text name="price" value="${product.price}" id="price"><br>
-      <input type="submit" value="Update Product"><input type="submit" value="View Products">
+      <input type=text name="price" value="${sessionScope.product.price}" id="price">
+      <mma:MarkEmptyField field="${sessionScope.product.price}"/><br>
+      
+      <input type="hidden" name="action" value="updateProduct" />
+      <input type="submit" value="Update Product">
     </form>
-
+      
+    <form name="ViewProductsButton" action="ProductMaint">
+        <input type="submit" value="View Products">
+    </form>
   </body>
 </html>
