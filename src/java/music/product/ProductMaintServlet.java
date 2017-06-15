@@ -28,7 +28,7 @@ public class ProductMaintServlet extends HttpServlet {
         if (action.equals("displayProducts")) {
             url = "/displayProducts.jsp";
         } else if (action.equals("addProduct")) {
-            url = updateProduct(request, response);
+            url = addProduct(request, response);
         } else if (action.equals("updateProduct")) {
             url = updateProduct(request, response);
         } else if (action.equals("deleteProduct")) {
@@ -53,7 +53,32 @@ public class ProductMaintServlet extends HttpServlet {
         doPost(request,response);
     }
 
-  
+
+    //Use this method to add and update a product
+    public String addProduct(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+          
+        // get the product data
+         String productCode = request.getParameter("productCode");
+
+         HttpSession session = request.getSession();
+
+         if(ProductIO.exists(productCode) && productCode!= null) {
+//              store the data in a Product object
+            Product product = new Product();
+            product.setCode(productCode);
+            product.setDescription(ProductIO.selectProduct(productCode).getDescription());
+            product.setPrice(ProductIO.selectProduct(productCode).getPrice());
+
+            session.setAttribute("product", product);
+         }
+         else {
+             session.removeAttribute("product");
+         }
+         
+        return "/product.jsp";
+     }
+    
     public String updateProduct(HttpServletRequest request,
             HttpServletResponse response) {
         

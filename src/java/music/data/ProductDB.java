@@ -22,10 +22,10 @@ public class ProductDB {
       
     }
     else {
-//      ProductDB.insert(product);
+      ProductDB.insert(product);
       ProductIO.insertProduct(product);
       
-    }s
+    }
   }
   
   public static void deleteProduct(Product product)
@@ -148,7 +148,7 @@ public class ProductDB {
       ps.setString(2, product.getCode());
       ps.setString(3, product.getDescription());
       System.out.println("Setting Double");
-      ps.setDouble(4, product.getPrice());
+//      ps.setDouble(4, product.getPrice());
       
       ps.executeUpdate();
     } catch (SQLException e) {
