@@ -17,7 +17,8 @@ public class ProductDB {
   
   public static void updateProduct(Product product)
   {       
-    if(ProductIO.exists(product.getCode())) {
+    if(ProductDB.productExists(product.getCode())) {
+      ProductDB.update(product);
       ProductIO.updateProduct(product);
       
     }
@@ -140,19 +141,45 @@ public class ProductDB {
     PreparedStatement ps = null;
     
     String query
-    = "INSERT INTO product (ProductID, ProductCode, ProductDescription, ProductPrice) "
-    + "VALUES (?, ?, ?, ?)";
+    = "INSERT INTO product (ProductCode, ProductDescription, ProductPrice) "
+    + "VALUES (?, ?, ?)";
     try {
       ps = connection.prepareStatement(query);
-      ps.setLong(1, product.getId());
-      ps.setString(2, product.getCode());
-      ps.setString(3, product.getDescription());
-      System.out.println("Setting Double");
-//      ps.setDouble(4, product.getPrice());
+      ps.setString(1, product.getCode());
+      ps.setString(2, product.getDescription());
+      ps.setDouble(3, product.getPrice());
       
       ps.executeUpdate();
     } catch (SQLException e) {
-      System.out.println("This didn't insert to database!");
+      System.out.println(e);
+    } finally {
+      DBUtil.closePreparedStatement(ps);
+      pool.freeConnection(connection);
+    }
+    
+  }
+  
+    
+  public static void update(Product product) {
+    ConnectionPool pool = ConnectionPool.getInstance();
+    Connection connection = pool.getConnection();
+    PreparedStatement ps = null;
+    Product temp = ProductDB.selectProduct(product.getCode());
+    Long tempId = temp.getId();
+    System.out.println("Product Code: "+tempId);
+    String query = "UPDATE Product SET "
+                + "ProductCode = ?, "
+                + "ProductDescription = ?, "
+                + "ProductPrice = ? "
+                + "WHERE ProductID = ?";
+    try {
+      ps = connection.prepareStatement(query);
+      ps.setString(1, product.getCode());
+      ps.setString(2, product.getDescription());
+      ps.setDouble(3, product.getPrice());
+      ps.setLong(4, tempId);
+      ps.executeUpdate();
+    } catch (SQLException e) {
       System.out.println(e);
     } finally {
       DBUtil.closePreparedStatement(ps);
@@ -182,5 +209,28 @@ public class ProductDB {
       pool.freeConnection(connection);
     }
   }
+  
+      public static boolean productExists(String productCode) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = "SELECT ProductID FROM Product "
+                + "WHERE ProductCode = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setString(1, productCode);
+            rs = ps.executeQuery();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
   
 }
